@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>Flask 学习汇总 - 盧瞳Blog</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="https://gallery-1303709080.cos.ap-chengdu.myqcloud.com/hexo-blog/head.jpg" type="image/x-icon" />
+    <meta name="description" content="写在前面本篇文章涵盖了Python Flask从基础开发环境搭建到应用上云的全过程，囊括了Flask基础，进价知识，jinjia2模板语法，此外还插入了Pipenv环境使用，Falsk前后端视图分离，以及笔者学习过程中使用到的Flask-SQLAlchemy和flask_login这俩个flask扩展库等等的内容，涵盖齐全，但由于篇幅所限适合回顾或是了解flask大致走向所用。(Flask-SQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask 学习汇总">
+<meta property="og:url" content="http://blog.1think2program.cn/2023/01/02/%E6%8A%80%E6%9C%AF/Flask%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="盧瞳Blog">
+<meta property="og:description" content="写在前面本篇文章涵盖了Python Flask从基础开发环境搭建到应用上云的全过程，囊括了Flask基础，进价知识，jinjia2模板语法，此外还插入了Pipenv环境使用，Falsk前后端视图分离，以及笔者学习过程中使用到的Flask-SQLAlchemy和flask_login这俩个flask扩展库等等的内容，涵盖齐全，但由于篇幅所限适合回顾或是了解flask大致走向所用。(Flask-SQL">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-02T08:09:25.000Z">
+<meta property="article:modified_time" content="2023-01-23T15:59:22.269Z">
+<meta property="article:author" content="盧瞳">
+<meta name="twitter:card" content="summary">
+    
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/justifiedGallery/justifiedGallery.min.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
+
+
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1674490319246">
+    
+        <link rel="stylesheet" href="//at.alicdn.com/t/c/font_3841883_wx2jzr3wdlh.css">
+    
+    <link rel="stylesheet" href="/css/style.css?v=1674490319246">
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://gallery-1303709080.cos.ap-chengdu.myqcloud.com/hexo-blog/article-bg.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="盧瞳" class="mdui-btn mdui-btn-icon"><img src="https://gallery-1303709080.cos.ap-chengdu.myqcloud.com/hexo-blog/head.jpg" alt="盧瞳"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="盧瞳">
+            <img src="https://gallery-1303709080.cos.ap-chengdu.myqcloud.com/hexo-blog/head.jpg" alt="盧瞳" alt="盧瞳">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>3</div>
+        <div><span>标签</span>0</div>
+        <div><span>分类</span>2</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/system/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/system/about.html" title="关于我">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于我
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/system/message.html" title="留言板">
+            <i class="mdui-list-item-icon nexmoefont icon-appstore-fill"></i>
+            <div class="mdui-list-item-content">
+                留言板
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/system/friends.html" title="友人帐">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                友人帐
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+            </form>
+         
+    </div>
+</div>
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://space.bilibili.com/1134123186" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(84,191,106);background-color: rgba(84,191,106, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/2061360308" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(84,191,106);background-color: rgba(84,191,106, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="https://gitee.com/lueyes" target="_blank" mdui-tooltip="{content: 'Gitee'}" style="color: rgb(84,191,106);background-color: rgba(84,191,106, .15);">
+            <i class="nexmoefont icon-gitee"></i>
+        </a><a class="mdui-ripple" href="https://blog.csdn.net/m0_70826521" target="_blank" mdui-tooltip="{content: 'CSDN'}" style="color: rgb(84,191,106);background-color: rgba(84,191,106, .15);">
+            <i class="nexmoefont icon-csdn"></i>
+        </a>
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
+
+      <ul class="category-list">
+
+        
+
+
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/总结/">总结</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/技术/">技术</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
+  </div>
+
+
+    
+    
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2023 盧瞳
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 33.33333333333333%;"> 
+              <img data-fancybox="gallery" src="https://gallery-1303709080.cos.ap-chengdu.myqcloud.com/hexo-blog/article-bg.jpg" alt="Flask 学习汇总" loading="lazy">
+              <h1>Flask 学习汇总</h1>
+          </div>
+      
+	  
+	  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+	  
+		
+    <a><i class="nexmoefont icon-calendar-fill"></i>2023年01月02日</a>
+
+		<!--<div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">-->
+    
+        <a><i class="nexmoefont icon-areachart"></i>约9.3k字</a>
+        <a><i class="nexmoefont icon-time-circle-fill"></i>预计需要40分钟</a>
+    
+<!--</div>-->
+		
+		</div>
+
+      <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>本篇文章涵盖了Python Flask从基础开发环境搭建到应用上云的全过程，囊括了<code>Flask基础</code>，<code>进价知识</code>，<code>jinjia2模板语法</code>，此外还插入了<code>Pipenv环境使用</code>，<code>Falsk前后端视图分离</code>，以及笔者学习过程中使用到的<code>Flask-SQLAlchemy</code>和<code>flask_login</code>这俩个flask扩展库等等的内容，涵盖齐全，但由于篇幅所限适合回顾或是了解flask大致走向所用。(<code>Flask-SQLAlchemy</code>部分没写，实在是太多了，可以看到文章的创建日期是1月2日事实上我实在1月23日发布的文章，由此可见……)</p>
+<p>文章前半部分是笔者看过《FlaskWeb开发实战：入门、进阶与原理解析》_李辉这本书后回顾时边看边挑选摘出的内容，后半部分是笔者查看这段时间学习时的练习项目中的关键代码结合所学知识整理而出。在此强烈向大家推荐这本书，并向李辉作者致谢！</p>
+<p>[Toc]</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>Python<br>    Pipenv</p>
+<h3 id="Pipenv"><a href="#Pipenv" class="headerlink" title="Pipenv"></a>Pipenv</h3><p>说实话博主在开始学习Flask之前一直使用Pycharm和pip，像管理虚拟环境这些都是Pycharm来管理的，已经有把我养废的趋势。这次准备自己手动尝试管理，这里就在介绍Flask之前先介绍一下Pipenv</p>
+<h4 id="Pipenv介绍"><a href="#Pipenv介绍" class="headerlink" title="Pipenv介绍"></a>Pipenv介绍</h4><p>首先要了解Pipenv是什么呢？简单来说它是pip的升级版，在默认使用pip时我们的工作方式一般是<code>pip + virtualenv + requirements.txt</code>，Pipenv能帮我们解决默认方式的弊端,具体来说：Pipenv呢它是pip，PIPfile和virtualenv的结合体可以帮我们更加方便地管理包和包依赖以及虚拟环境的安装，使用它能够使我们实现高效的Python项目开发流。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><blockquote>
+<p>使用<code>pip install pipenv</code>直装就好</p>
+</blockquote>
+<h4 id="创建虚拟环境"><a href="#创建虚拟环境" class="headerlink" title="创建虚拟环境"></a>创建虚拟环境</h4><ol>
+<li>进入项目的根目录</li>
+<li>执行<code>pip install</code>命令<blockquote>
+<p><code>注意：</code>1. 在默认情况下，pipenv会统一管理所有的虚拟环境。在Windows系统中，虚拟环境文件夹会在C:\Users\用户名.virtualenvs\目录下创建，而在Linux或MASOS系统中会在~&#x2F;.local&#x2F;share&#x2F;virtualenvs&#x2F;目录下创建。虚拟环境文件夹的目录名称形式为“当前项目目录名+一串随机字符，比如helloflask-5Pa0ZfZw”<br>我们可以通过设置环境变量PIPENV_VENV_IN_PROJECT这时名为.venv的虚拟环境将在项目根目录被创建。<br>2. 你可以通过<code>--three</code>和<code>two</code>选项来声明虚拟环境中使用的Python版本（分别对应Python3和Python2），或是使用<code>--python</code>选项指定具体的版本号。同时要哦确保对应版本的Python已经安装在电脑中。<br>3. 使用<code>pipenv shell</code>命令显式地激活虚拟环境。当你执行<code>pipenv shell</code>或是<code>pipenv run</code>命令时，Pipenv会从项目目录下的.env文件中加载环境变量，而且当你使用Linux系统时激活成功后命令行提示符前会添加虚拟环境的名称<br>4. 除了使用上述的<code>pipenv shell</code>命令外，Pipenv还提供了一个<code>pipenv run</code>命令，这个命令允许你不显示激活虚拟环境即可在当前项目的虚拟环境中执行命令，比如<code>pipenv run python hello.py</code>这会使用虚拟环境中的Python解析器。事实上，这种方式是更推荐的做法，因为它可以让你在执行操作时不用关心自己是否激活了虚拟环境，当然最终还是按你偏爱的用法操作了。</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="管理依赖"><a href="#管理依赖" class="headerlink" title="管理依赖"></a>管理依赖</h4><p>在创建虚拟环境时，如果项目根目录下没有Pipfile文件，<code>Pipenv install</code>命令还会在项目文件夹根目录下创建Pipfile和Pipfile.lock文件，前者用于记录项目依赖包列表，而后者记录了固定版本的详细依赖安装包列表。当我们使用Pipenv安装删除更新依赖包时，Pipfile以及Pipfile.lock会自动更新，这比pip使用reqirements.txt，需要我们手动更新方便多了。</p>
+<h3 id="安装Flask"><a href="#安装Flask" class="headerlink" title="安装Flask"></a>安装Flask</h3><p><code>pipenv install flask</code>Pipenv会帮我们自动管理虚拟环境，无论你是否激活虚拟环境这条命令都会将flask装入虚拟环境中</p>
+<h3 id="安装python-dotenv管理环境变量"><a href="#安装python-dotenv管理环境变量" class="headerlink" title="安装python-dotenv管理环境变量"></a>安装python-dotenv管理环境变量</h3><p><code>pipenv install python-dotenv</code><br>具体环境变量管理知识详见下文</p>
+<h3 id="安装watchdog获取更好的调试体验"><a href="#安装watchdog获取更好的调试体验" class="headerlink" title="安装watchdog获取更好的调试体验"></a>安装watchdog获取更好的调试体验</h3><p>默认会使用Werkzeng内置的stat重载器，他的缺点是耗电严重且准确性一般，为了获取更优秀的体验，我们需要安装Watchdog来监测文件变动，安装后自动生效。<br><code>pipenv install watchdog --dev</code>因为这个包只在开发时会用到，所以我们在安装命令后添加了一个–dev选项，这用来把这个包声明为开发依赖。在Pipfile文件中，这个包会被添加到dev-packages部分。</p>
+<h2 id="Flask基础"><a href="#Flask基础" class="headerlink" title="Flask基础"></a>Flask基础</h2><blockquote>
+<p>这部分记录flask使用基础</p>
+</blockquote>
+<h3 id="flask基本模式示例"><a href="#flask基本模式示例" class="headerlink" title="flask基本模式示例"></a>flask基本模式示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;hello,World!&lt;/h1&gt;&#x27;</span></span><br><span class="line">​```python</span><br><span class="line">&gt;传入Flask构造方法的第一个参数是模块或包的名称，我们使用特殊变量__name__</span><br><span class="line">&gt;</span><br><span class="line"><span class="comment">### 一个视图绑定多个URL</span></span><br></pre></td></tr></table></figure>
+<p>@app.rout(‘&#x2F;hi’)<br>@app.rout(‘&#x2F;hello’)<br>def say_hello():<br>    ……</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">### 动态路由</span><br><span class="line">在路由定义中使用`&lt;变量名&gt;`,Flask在处理请求时会把变量传入视图函数，我们可以添加参数来获取这个变量值</span><br><span class="line">​```python</span><br><span class="line">@app.route(&#x27;/greet/&lt;name&gt;&#x27;)</span><br><span class="line">def greet(name):</span><br><span class="line">	return ......</span><br></pre></td></tr></table></figure>
+<h3 id="启动开发服务器"><a href="#启动开发服务器" class="headerlink" title="启动开发服务器"></a>启动开发服务器</h3><p>使用命令<code>flask run</code>可以启动内置的开发服务器，也可以使用<code>app.run()</code>方法</p>
+<h4 id="自动发现程序的规则"><a href="#自动发现程序的规则" class="headerlink" title="自动发现程序的规则"></a>自动发现程序的规则</h4><p>使用上述命令后：</p>
+<ol>
+<li>flask会从当前目录寻找app.py和wsgi.py模块，并从中寻找名为app或application的程序</li>
+<li>从环境变量FLASK_APP对应值寻找名为app或者application的程序实例<br>在没有设置FLASK_APP时你需要将程序的主模块命名为app.py或者你使用环境变量指定需要搜寻的其他名称</li>
+</ol>
+<h4 id="管理环境变量"><a href="#管理环境变量" class="headerlink" title="管理环境变量"></a>管理环境变量</h4><p>如果你安装了python-dotenv，那么使用<code>flask run</code>或者其他命令时他会自动从.flaskenv文件和.env文件中加载环境变量，具体的优先级是：<br>手动设置的环境变量&gt;.env中设置的环境变量&gt;.flaskenv中设置的环境变量</p>
+<p>鉴于手动设置环境变量太繁琐且不便于管理，而且开发多个flask程序时需要频繁切换，最好安装python-dotenv使用.env和.flaskenv管理环境变量，其中前者用来存储包含敏感信息的环境变量，如账户，密码，秘钥之类。</p>
+<p>.env和.flaskenv具体书写格式为:键值对形式，每行一个，’#’标注注释，如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#秘钥</span><br><span class="line">SECRET_KEY=089de6ba-7874-11ed-8134-e4fd453f23ec</span><br><span class="line"># FLASK_ENV 变量代表运行时的环境时开发环境(development)还是生产环境(production)</span><br><span class="line">FLASK_DEBUG=1</span><br><span class="line"># FLASK_DEBUG 变量代表是否开启调试器开启1关闭0,开发模式下默认开启,不建议手动操作此项目</span><br><span class="line"># FLASK_DEBUG=1</span><br><span class="line"># FLASK_APP 变量代表执行flask run命令时要运行的应用文件</span><br><span class="line">FLASK_APP=run.py</span><br><span class="line"># FLASK_RUN_HOST 变量代表运行的host 0.0.0.0代表外部计算机访问/127.0.0.1代表本机访问</span><br><span class="line">FLASK_RUN_HOST=0.0.0.0</span><br><span class="line"># FLASK_RUN_PORT 变量代表监听的端口默认5000</span><br><span class="line">FLASK_RUN_PORT=5000</span><br></pre></td></tr></table></figure>
+
+<p>注意不要把.env上传到GIt仓库中哦。</p>
+<h3 id="启动选项-扩展语法"><a href="#启动选项-扩展语法" class="headerlink" title="启动选项-扩展语法"></a>启动选项-扩展语法</h3><ol>
+<li>使用<code>--host=0.0.0.0</code>指定Web服务器对外可见<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask run --host=0.0.0.0</span><br></pre></td></tr></table></figure></li>
+<li>使用<code>--port=端口值</code>改变5000的默认端口<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask run --port=80</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Flask-Shell"><a href="#Flask-Shell" class="headerlink" title="Flask Shell"></a>Flask Shell</h3><p>开发Flask程序时我们并不会直接使用python命令启动的Python Shell而是使用flask shell命令：在终端中执行<code>flask shell</code>命令启动flask shell</p>
+<h3 id="Flask扩展"><a href="#Flask扩展" class="headerlink" title="Flask扩展"></a>Flask扩展</h3><p>flask只提供基础的功能，我们需要各种其他的扩展，因为Flask扩展编写有一些约定，他们一般命名为<code>flask_扩展名</code>，且一般来说扩展会提供一个扩展类，实例化这个类，并传入我们创建的程序实例app作为参数，即可完成初始化过程</p>
+<h3 id="项目配置"><a href="#项目配置" class="headerlink" title="项目配置"></a>项目配置</h3><p>配置变量实际上就是一些大写形式的Python变量，可以避免在程序中以硬编码的形式设置程序</p>
+<blockquote>
+<p><code>注意</code>：配置的名称必须全是大写形式，小写的变量将不会被读取</p>
+</blockquote>
+<p>这些变量通过Flask对象的app.congig属性作为统一的接口,有多种方式操作他们<br>存:</p>
+<ol>
+<li><code>app.config[&quot;NAME&quot;]</code> &#x3D; ‘Peter’</li>
+<li><code>app.congig.update&#123;NAME = True,SECRET_KEY=&#39;dsfasf@3dfa&#39;&#125;</code></li>
+<li>将配置变量保存到单独的Python脚本，JSON格式的文件或者Python类中，config对象提供了相应的方法来导入配置，具体有：<br>取:<br>取出的方式与操作字典类似<br> <code>value = app.config[&#39;NAME&#39;]</code></li>
+</ol>
+<h3 id="url-for-函数"><a href="#url-for-函数" class="headerlink" title="url_for()函数"></a>url_for()函数</h3><p>使用url_for()函数可以避免使用硬编码的方式书写路由（URL）规则</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如果要获取绝对路径需要设置<code>_external</code>参数设为True</p>
+<h3 id="自定义Flask命令"><a href="#自定义Flask命令" class="headerlink" title="自定义Flask命令"></a>自定义Flask命令</h3><p>通过特殊装饰器<code>app.cli.command()</code>装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.cli.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">	click.echo(<span class="string">&#x27;Hello,World!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>上述注册的命令即hello，可以使用<code>flask hello</code>命令触发函数。作为提单，你也可以在<code>app.cli.command()</code>装饰器中传入参数来设置命令名称</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.cli.command(<span class="params"><span class="string">&#x27;say-hello&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">	click.echo(<span class="string">&#x27;Hello,World!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="模板与静态文件"><a href="#模板与静态文件" class="headerlink" title="模板与静态文件"></a>模板与静态文件</h3><p>默认情况下flask会读取根目录中的<code>templates</code>文件夹作为HTML模板文件夹，而今天资源则会在根目录下<code>static</code>文件夹中获取<br>HTML中引用static文件夹中静态资源时需要使用url_for()函数<br><code>url_for(&#39;admin_view.static&#39;, filename=&#39;css/add.css&#39;)</code></p>
+<h2 id="Flask进阶"><a href="#Flask进阶" class="headerlink" title="Flask进阶"></a>Flask进阶</h2><h3 id="Reques对象"><a href="#Reques对象" class="headerlink" title="Reques对象"></a>Reques对象</h3><p>我们首先使用导入<br><code>from flask import Flask requeat</code></p>
+<h4 id="使用Request的属性获取请求的URL"><a href="#使用Request的属性获取请求的URL" class="headerlink" title="使用Request的属性获取请求的URL"></a>使用Request的属性获取请求的URL</h4><p>假设请求的URL是<a target="_blank" rel="noopener" href="http://helloftask.com/hello?name=Grey">http://helloftask.com/hello?name=Grey</a> 当Flask接收到请求后，请求对象会提供多个属性来获取URL的各部分，以下是常用属性表：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>path</td>
+<td>u’&#x2F;hello’</td>
+</tr>
+<tr>
+<td>full_path</td>
+<td>u’hello?name&#x3D;Grey’</td>
+</tr>
+<tr>
+<td>host</td>
+<td>u’helloftask.com’</td>
+</tr>
+<tr>
+<td>host_url</td>
+<td>u’<a target="_blank" rel="noopener" href="http://helloftask.com/">http://helloftask.com/</a>‘</td>
+</tr>
+<tr>
+<td>base_url</td>
+<td>u’<a target="_blank" rel="noopener" href="http://helloftask.com/hello">http://helloftask.com/hello</a>‘</td>
+</tr>
+<tr>
+<td>url</td>
+<td>u’<a target="_blank" rel="noopener" href="http://helloftask.com/hello?name=Grey">http://helloftask.com/hello?name=Grey</a>‘</td>
+</tr>
+<tr>
+<td>url_root</td>
+<td><a target="_blank" rel="noopener" href="http://helloftask.com/">http://helloftask.com/</a></td>
+</tr>
+</tbody></table>
+<h4 id="Request对象常用的属性和方法"><a href="#Request对象常用的属性和方法" class="headerlink" title="Request对象常用的属性和方法"></a>Request对象常用的属性和方法</h4><table>
+<thead>
+<tr>
+<th>属性&#x2F;方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>arg</td>
+<td>解析后的查询字符串，可通过字典方式获取键值，如果想要获取未解析的原生字符串，可以使用query_string属性</td>
+</tr>
+<tr>
+<td>blueprint</td>
+<td>当前蓝本的名称</td>
+</tr>
+<tr>
+<td>cookies</td>
+<td>随请求提交的cookies字典</td>
+</tr>
+<tr>
+<td>data</td>
+<td>字符串形式的请求数据</td>
+</tr>
+<tr>
+<td>endpoint</td>
+<td>与当前请求匹配的端点值</td>
+</tr>
+<tr>
+<td>files</td>
+<td>所有上传文件，可以使用字典的形式获取文件。使用的键为文件input标签中的name属性值作为键获取</td>
+</tr>
+<tr>
+<td>form</td>
+<td>包含解析后的表单数据，通过input的name属性值作为键获取</td>
+</tr>
+<tr>
+<td>values</td>
+<td>结合了args和form属性的值</td>
+</tr>
+<tr>
+<td>get_data(cache&#x3D;True,as_text&#x3D;False,parse_from_data&#x3D;False)</td>
+<td>获取请求中的数据，默认读取为字节串，将as_text设置为True则返回值将是解码后的unicode字符串</td>
+</tr>
+<tr>
+<td>get_json(self,force&#x3D;False,silent&#x3D;False,cache&#x3D;True)</td>
+<td>作为Json解析并返回数据，如果MIME类型不是JSON，则返回None(除非force设为True)；解析出错则抛出BadRequest异常（如果为开启调试模式，则返回400错误响应），如果silent设为True则返回None；cache设置是否缓存解析后的JSON数据</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>首部字段，以字典形式操作</td>
+</tr>
+<tr>
+<td>is_json</td>
+<td>通过MIME类型判断是否为JSON数据，返回布尔值</td>
+</tr>
+<tr>
+<td>json</td>
+<td>包含解析后的JSON数据，内部调用get_json(),通过字典方式获取键值</td>
+</tr>
+<tr>
+<td>method</td>
+<td>请求的HTTP方法</td>
+</tr>
+<tr>
+<td>referrer</td>
+<td>请求发起的源，即referer</td>
+</tr>
+<tr>
+<td>scheme</td>
+<td>请求的URL模式（http或https）</td>
+</tr>
+<tr>
+<td>user_agent</td>
+<td>用户代理，包含了用户的客户端类型，操作系统类型等信息</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>其中最长使用的是arg（获取get方法请求传入的数据）form（获取post请求传入的数据）values（同时获取get和post请求获取的数据）get_json(获取JSON格式的数据)</p>
+</blockquote>
+<h3 id="处理请求"><a href="#处理请求" class="headerlink" title="处理请求"></a>处理请求</h3><h4 id="设置监听的HTTP方法"><a href="#设置监听的HTTP方法" class="headerlink" title="设置监听的HTTP方法"></a>设置监听的HTTP方法</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/hello&#x27;</span>,methods=[<span class="string">&#x27;GET&#x27;</span>,<span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> ......</span><br></pre></td></tr></table></figure>
+
+<h4 id="URL处理"><a href="#URL处理" class="headerlink" title="URL处理"></a>URL处理</h4><p>在URL中使用变量直接传入会造成安全隐患，我们应该对奇根据我们需要进行转义后再继续使用，Flask提供一些转换器帮我们简化了这个任务例如你可以使用变量<a href="int:year">int:year</a>,Flask在解析这个URL变量时会将其转换为整型数据传入</p>
+<p>Flask内置的URL变量转换器</p>
+<table>
+<thead>
+<tr>
+<th>转换器</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>string</td>
+<td>不包含斜线的字符串（默认值）</td>
+</tr>
+<tr>
+<td>int</td>
+<td>整型</td>
+</tr>
+<tr>
+<td>float</td>
+<td>浮点数</td>
+</tr>
+<tr>
+<td>path</td>
+<td>包含斜线的字符串，static路由规则中的filename变量就使用了这个转换器</td>
+</tr>
+<tr>
+<td>any</td>
+<td>匹配一系列给定值中的一个元素，具体使用方法为&lt;any(value1,value2,……):变量名&gt;</td>
+</tr>
+<tr>
+<td>uuid</td>
+<td>UUID字符串</td>
+</tr>
+</tbody></table>
+<h4 id="请求钩子"><a href="#请求钩子" class="headerlink" title="请求钩子"></a>请求钩子</h4><p>对请求进行预处理和后处理</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 预处理例子</span></span><br><span class="line"><span class="meta">@app.before_request</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">do_something</span>():</span><br><span class="line">	<span class="keyword">pass</span> <span class="comment"># 这里的代码会在每个请求处理前执行</span></span><br></pre></td></tr></table></figure>
+<p>注意，这些请求都能注册任意多个处理函数，函数名并不要求必须和钩子名称相同，下面是请求钩子的列表</p>
+<table>
+<thead>
+<tr>
+<th>钩子</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>before_first_request</td>
+<td>处理第一个请求之前执行</td>
+</tr>
+<tr>
+<td>before_request</td>
+<td>处理每个请求前都要执行</td>
+</tr>
+<tr>
+<td>after_request</td>
+<td>如果没有未处理的异常抛出，会在每个请求结束后运行</td>
+</tr>
+<tr>
+<td>treardown_request</td>
+<td>即使有未处理异常抛出，也会在每个请求结束后执行，如果发生异常，会传入异常对象作为参数到注册的函数中</td>
+</tr>
+<tr>
+<td>after_this_request</td>
+<td>在视图内注册一个函数，会在这个请求结束后运行</td>
+</tr>
+</tbody></table>
+<h4 id="生成响应"><a href="#生成响应" class="headerlink" title="生成响应"></a>生成响应</h4><p>Flask的视图函数必须有返回，否则报错！<br>视图函数可以返回最多由三个元素组成的元组：响应主体、状态码、首部字段<br>其中普通的请求只需要响应主体就行：<code>return &#39;hello world&#39;</code><br>指定状态码：<code>return &#39;hello world,201&#39;</code><br>修改或附加某个首部字段：重定向目标URL<code>return &#39;&#39;,302,&#123;&#39;Location&#39;:&#39;http:www.exmple.com&#39;&#125;</code></p>
+<h4 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h4><p>使用函数<code>redirect(url)</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params">...</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">return</span> redirect(<span class="string">&#x27;http:...&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>其中默认状态码为302，即临时重定向，可以通过在函数中传入第二个参数或者使用code关键字传入替代默认值<br>如果需要在程序内重定向到其他视图，只需在redirect中使用url_for()生成目标URL就行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params">...</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;hi&#x27;</span>)) <span class="comment"># 重定向到/hi</span></span><br></pre></td></tr></table></figure>
+<h4 id="错误响应"><a href="#错误响应" class="headerlink" title="错误响应"></a>错误响应</h4><p>Flask会自动处理常见的错误响应，可以通过Flask提供的abort()函数抛出异常，about()前不需要return，且about()后的代码不会被执行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/404&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">not_found</span>():</span><br><span class="line">	about(<span class="number">404</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="jsonify-函数"><a href="#jsonify-函数" class="headerlink" title="jsonify()函数"></a>jsonify()函数</h4><p>jsonify包装了json模块的内容，且会自动生成响应对象且设置正确的MIME类型，你可以传入普通参数，也可以传入关键字参数，还可以像使用dumps()一样传入更加直观的字典或元组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> jsonify</span><br><span class="line"><span class="meta">@app.rout(<span class="params"><span class="string">&#x27;/foo&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">foo</span>():</span><br><span class="line">	<span class="keyword">return</span> jsonify(&#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&quot;Grey Li&quot;</span>&#125;)</span><br><span class="line">	<span class="comment"># 或者使用</span></span><br><span class="line">	<span class="keyword">return</span> jsonify(name=<span class="string">&#x27;Grey&#x27;</span>)</span><br><span class="line">	<span class="comment"># 或者使用</span></span><br><span class="line">	<span class="keyword">return</span> jsonify(<span class="string">&quot;&#123;&#x27;name&#x27;:&#x27;Grey Li&#x27;&#125;&quot;</span>)</span><br><span class="line">	<span class="comment"># 你还可以附加状态码来自定义响应类型</span></span><br><span class="line">	<span class="keyword">return</span> jsonify(&#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&quot;Grey Li&quot;</span>&#125;),<span class="number">500</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用Cookie"><a href="#使用Cookie" class="headerlink" title="使用Cookie"></a>使用Cookie</h3><h4 id="设置cookie"><a href="#设置cookie" class="headerlink" title="设置cookie"></a>设置cookie</h4><p>发送cookie需要用到Response类提供的set_cookie()方法，下面简单罗列一下此方法所支持的常用参数</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>key</td>
+<td>cookie创建的键名称</td>
+</tr>
+<tr>
+<td>value</td>
+<td>cookie的值</td>
+</tr>
+<tr>
+<td>max_age</td>
+<td>cookie被保存的时间数，单位秒，默认在用户会话结束（关闭浏览器）时过期</td>
+</tr>
+<tr>
+<td>expires</td>
+<td>具体的过期时间，一个datetime对象或UNIX时间戳</td>
+</tr>
+<tr>
+<td>path</td>
+<td>限制cookie只给指定的路径可用，默认为整个域名</td>
+</tr>
+<tr>
+<td>domain</td>
+<td>设置cookie可用的域名</td>
+</tr>
+<tr>
+<td>secure</td>
+<td>如果为True，只有通过Https才可以使用</td>
+</tr>
+<tr>
+<td>httponly</td>
+<td>若果设为True那么禁止客户端javaScript获取cookie</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Falsk,make_response</span><br><span class="line"><span class="meta">@app.rout(<span class="params"><span class="string">&#x27;/set/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">set_cookie</span>(<span class="params">name</span>):</span><br><span class="line">	response = make_response(redirect(url_for(<span class="string">&#x27;hello&#x27;</span>)))</span><br><span class="line">	response.set_cookie(<span class="string">&#x27;name&#x27;</span>,name)</span><br><span class="line">	<span class="keyword">return</span> response</span><br><span class="line">	</span><br><span class="line"><span class="comment"># 上面这段示例代码可以看做是简单登录功能的一部分实现</span></span><br><span class="line">用户登录过后跳转到set_cookie为其设置cookie记录登录转态，然后跳转到正式界面，事实上上面代码漏洞很大，此处仅仅是作为设置cookie的实例</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>当浏览器保存了服务端设置的cookie后，浏览器再次发送到该服务器的请求会自动携带设置的cookie信息</p>
+<h4 id="读取cookie"><a href="#读取cookie" class="headerlink" title="读取cookie"></a>读取cookie</h4><p>设置好cookie后我们就可以在需要的时候读取cookie了，正如上文所诉，cookie是和请求一起发送的，因此我们可以使用flask的request对象获取cookie<br>使用<code>request.cookie.get(p_srt)</code>方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Falsk,request</span><br><span class="line"><span class="meta">@app.rout(<span class="params"><span class="string">&#x27;/hello&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">    name = request.cookies.get(<span class="string">&#x27;name&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="session：更加安全的cookie"><a href="#session：更加安全的cookie" class="headerlink" title="session：更加安全的cookie"></a>session：更加安全的cookie</h3><p>有经验的小伙伴一定知道我们在浏览器中可以查看和修改存储的cookie,有些时候比如我们使用cookie存储用户的登录状态的时候，我们不想让其他人查看和修改，以防恶意用户伪造cookie他人账户，这时我们就需要对敏感的cookie内容进行加密，方便的是flask提供了session对象来将cookie进行加密储存，默认情况下他把数据储存在浏览器上一个名为session的cookie中</p>
+<p>要想使用session你需要先为flask设置秘钥,你可以使用<code>Flask.secret_key</code>属性或配置环境变量<code>SECRET_KET</code>具体做法是<code>app.secret_key=&#39;secret string&#39;</code>这样做固然可以，但更加安全的做法是将其写入系统环境变量，考虑到不同项目间的干扰我们最好是写入上文所提到的<code>.env</code>文件中你应该在<code>.env</code>这么写<code>SECRET_KEY=secret string</code>然后在脚本程序中使用os提供的<code>getenv</code>获取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ......</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.secret_key=os.getenv(<span class="string">&#x27;SECRET_KEY&#x27;</span>,<span class="string">&#x27;secret string&#x27;</span>) </span><br><span class="line"><span class="comment"># 第二个参数是在环境变量中没有获取到情况时使用的默认值，（此处应该报警^-^）</span></span><br></pre></td></tr></table></figure>
+<p>有了秘钥接下是写入session 的正式环节了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> falsk <span class="keyword">import</span> session</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/login&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>():</span><br><span class="line">    session[<span class="string">&#x27;logged_in&#x27;</span>] = <span class="literal">True</span> <span class="comment"># 写入session</span></span><br><span class="line">    </span><br><span class="line">    ......</span><br><span class="line"><span class="comment"># session中的数据可以像字典一样读取或是使用get方法，区别是前者没有报错后者返回None    </span></span><br></pre></td></tr></table></figure>
+<h3 id="Falsk上下文"><a href="#Falsk上下文" class="headerlink" title="Falsk上下文"></a>Falsk上下文</h3><h2 id="JinJia2"><a href="#JinJia2" class="headerlink" title="JinJia2"></a>JinJia2</h2><p>上面我们已经简单说过了flask的模板与静态文件，而flask中渲染网页使用的jinjia2这个库，下面我们来具体说说它的语法,这部分网上有很多讲解，笔者直接粘贴了，打字好累</p>
+<blockquote>
+<p>来源版权 | 版权声明：</p>
+<p>以下jinjia2用法来自博客园博主「浩浩学习」的原创文章，<br>原文链接：<code>https://www.cnblogs.com/hhaostudy/p/16119959.html</code></p>
+</blockquote>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>jinja2模板中使用 {{ }} 语法表示一个变量，它是一种特殊的占位符。当利用jinja2进行渲染的时候，它会把这些特殊的占位符进行填充&#x2F;替换，jinja2支持python中所有的Python数据类型比如列表、字段、对象等。</p>
+<p>使用<code>{{变量名}}</code>包裹的是一个变量<br>下面是一个简单的实例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># /templates/index.html</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">你好&#123;% raw %&#125;&#123;&#123;name&#125;&#125;&#123;% endraw %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在Python中我们这样使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ./app.py</span></span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>,</span><br><span class="line">                        name=<span class="string">&quot;世界&quot;</span>   </span><br><span class="line">                           )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>其他支持的数据类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;p&gt;this is a dicectory:&#123;% raw %&#125;&#123;&#123; mydict[&#x27;key&#x27;] &#125;&#125;&#123;% endraw %&#125; &lt;/p&gt;</span><br><span class="line">&lt;p&gt;this is a list:&#123;% raw %&#125;&#123;&#123; mylist[3] &#125;&#125;&#123;% endraw %&#125; &lt;/p&gt;</span><br><span class="line">&lt;p&gt;this is a object:&#123;% raw %&#125;&#123;&#123; myobject.something() &#125;&#125;&#123;% endraw %&#125; &lt;/p&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><p> jinja2中的过滤器</p>
+<table>
+<thead>
+<tr>
+<th>过滤器名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>safe</td>
+<td>渲染时值不转义</td>
+</tr>
+<tr>
+<td>capitialize</td>
+<td>把值的首字母转换成大写，其他子母转换为小写</td>
+</tr>
+<tr>
+<td>lower</td>
+<td>把值转换成小写形式</td>
+</tr>
+<tr>
+<td>upper</td>
+<td>把值转换成大写形式</td>
+</tr>
+<tr>
+<td>title</td>
+<td>把值中每个单词的首字母都转换成大写</td>
+</tr>
+<tr>
+<td>trim</td>
+<td>把值的首尾空格去掉</td>
+</tr>
+<tr>
+<td>striptags</td>
+<td>渲染之前把值中所有的HTML标签都删掉</td>
+</tr>
+<tr>
+<td>join</td>
+<td>拼接多个值为字符串</td>
+</tr>
+<tr>
+<td>replace</td>
+<td>替换字符串的值</td>
+</tr>
+<tr>
+<td>round</td>
+<td>默认对数字进行四舍五入，也可以用参数进行控制</td>
+</tr>
+<tr>
+<td>int</td>
+<td>把值转换成整型</td>
+</tr>
+</tbody></table>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><h4 id="迭代列表"><a href="#迭代列表" class="headerlink" title="迭代列表"></a>迭代列表</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">&#123;% for user in users %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>&#123;% raw %&#125;&#123;&#123; user.username|title &#125;&#125;&#123;% endraw %&#125;<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="迭代字典"><a href="#迭代字典" class="headerlink" title="迭代字典"></a>迭代字典</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dl</span>&gt;</span></span><br><span class="line">&#123;% for key, value in my_dict.iteritems() %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">dt</span>&gt;</span>&#123;% raw %&#125;&#123;&#123; key &#125;&#125;&#123;% endraw %&#125;<span class="tag">&lt;/<span class="name">dt</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dd</span>&gt;</span>&#123;% raw %&#125;&#123;&#123; value&#125;&#125;&#123;% endraw %&#125;<span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">dl</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当然也可以加入else语句，在循环正确执行完毕后，执行</p>
+<h3 id="判断-if语句使用"><a href="#判断-if语句使用" class="headerlink" title="判断 if语句使用"></a>判断 if语句使用</h3><p>if条件判断语句必须放在。和python中的类似，</p>
+<p>可以使用&gt;，&lt;，&lt;&#x3D;，&gt;&#x3D;，&#x3D;&#x3D;，!&#x3D;来进行判断，也可以通过and，or，not，()来进行逻辑合并操作</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if name==1 %&#125;                    <span class="comment">&lt;!--name的值是否等于1--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>恭喜，您抽中了一等奖！<span class="tag">&lt;/<span class="name">h1</span>&gt;</span>        <span class="comment">&lt;!--name的值等于1，显示本行h1代码--&gt;</span></span><br><span class="line">&#123;% elif name==2 %&#125;                    <span class="comment">&lt;!--name的值是否等于2--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>恭喜，您抽中了二等奖！<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">&#123;% else %&#125;                            <span class="comment">&lt;!--name的值是否等于其他--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>恭喜，您抽中了三等奖！<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">&#123;% endif %&#125;                            <span class="comment">&lt;!--结束if语句--&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在for循环中，jinja2还提供了一些特殊的变量，用以来获取当前的遍历状态：</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>loop.index</td>
+<td>当前迭代的索引（从1开始）</td>
+</tr>
+<tr>
+<td>loop.index0</td>
+<td>当前迭代的索引（从0开始）</td>
+</tr>
+<tr>
+<td>loop.first</td>
+<td>是否是第一次迭代，返回bool</td>
+</tr>
+<tr>
+<td>loop.last</td>
+<td>是否是最后一次迭代，返回bool</td>
+</tr>
+<tr>
+<td>loop.length</td>
+<td>序列中的项目数量</td>
+</tr>
+<tr>
+<td>loop.revindex</td>
+<td>到循环结束的次数（从1开始）</td>
+</tr>
+<tr>
+<td>loop.revindex0</td>
+<td>到循环结束的次数(从0开始）</td>
+</tr>
+</tbody></table>
+<h3 id="jinja2的宏"><a href="#jinja2的宏" class="headerlink" title="jinja2的宏"></a>jinja2的宏</h3><p>宏类似于Python中的函数，我们在宏中定义行为，还可以进行传递参数，就像Python中的函数一样一样儿的。</p>
+<p>在宏中定义一个宏的关键字是macro，后面跟其 宏的名称和参数等</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;% macro input(name,age=18) %&#125;   # 参数age的默认值为18</span><br><span class="line"> </span><br><span class="line"> <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&#x27;text&#x27;</span> <span class="attr">name</span>=<span class="string">&quot;&#123;% raw %&#125;&#123;&#123; name &#125;&#125;&#123;% endraw %&#125;&quot;</span> <span class="attr">value</span>=<span class="string">&quot;&#123;% raw %&#125;&#123;&#123; age &#125;&#125;&#123;% endraw %&#125;&quot;</span> &gt;</span></span><br><span class="line"> </span><br><span class="line">&#123;% endmacro %&#125;</span><br><span class="line">调用方法也和Python的类似</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;% raw %&#125;&#123;&#123; input(&#x27;daxin&#x27;) &#125;&#125;&#123;% endraw %&#125; <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;% raw %&#125;&#123;&#123; input(&#x27;daxin&#x27;,age=20) &#125;&#125;&#123;% endraw %&#125; <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="jinja2的继承和Super函数"><a href="#jinja2的继承和Super函数" class="headerlink" title="jinja2的继承和Super函数"></a>jinja2的继承和Super函数</h3><p>jinja2中最强大的部分就是模板继承。模板继承允许我们创建一个基本(骨架)文件，其他文件从该骨架文件继承，然后针对自己需要的地方进行修改。</p>
+<p>jinja2的骨架文件中，利用block关键字表示其包涵的内容可以进行修改。</p>
+<p>以下面的骨架文件base.html为例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    &#123;% block head %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>&#123;% block title %&#125;&#123;% endblock %&#125; - My Webpage<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    &#123;% endblock %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;content&quot;</span>&gt;</span>&#123;% block content %&#125;&#123;% endblock %&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;footer&quot;</span>&gt;</span></span><br><span class="line">    &#123;% block  footer %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span>This is javascript code <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    &#123;% endblock %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里定义了四处 block，即：head，title，content，footer。那怎么进行继承和变量替换呢？注意看下面的文件</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extend &quot;base.html&quot; %&#125;       # 继承base.html文件</span><br><span class="line"> </span><br><span class="line">&#123;% block title %&#125; Dachenzi &#123;% endblock %&#125;   # 定制title部分的内容</span><br><span class="line"> </span><br><span class="line">&#123;% block head %&#125;</span><br><span class="line">    &#123;% raw %&#125;&#123;&#123;  super()  &#125;&#125;&#123;% endraw %&#125;        # 用于获取原有的信息</span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">&#x27;text/css&#x27;</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.important</span> &#123; <span class="attribute">color</span>: <span class="number">#FFFFFF</span> &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">&#123;% endblock %&#125;   </span><br></pre></td></tr></table></figure>
+<p>其他不修改的原封不同的继承<br>PS: super()函数 表示获取block块中定义的原来的内容。</p>
+<h2 id="Flask-蓝图"><a href="#Flask-蓝图" class="headerlink" title="Flask 蓝图"></a>Flask 蓝图</h2><p>要正式开发一个web项目把所有的路由关系都塞到一个app.py中是显然行不通的，最起码这是不是一个很好的办法，这时候就需要falsk为我们提供的蓝图</p>
+<p>使用蓝图大致可以分为三个步骤</p>
+<ol>
+<li>创建一个蓝图对象</li>
+<li>在这个蓝图对象上进行操作,注册路由,指定静态文件夹 ……</li>
+<li>在应用对象上注册这个蓝图对象</li>
+</ol>
+<p>下面三段代码分别代表上述三个过程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">admin_view = Blueprint(name=<span class="string">&#x27;admin_view&#x27;</span>,</span><br><span class="line">                       import_name=__name__,</span><br><span class="line">                       static_folder=<span class="string">&quot;../models/admin/static&quot;</span>,</span><br><span class="line">                       static_url_path=<span class="string">&quot;/admin_static&quot;</span>,</span><br><span class="line">                       template_folder=<span class="string">&#x27;../models/admin/templates&#x27;</span>,</span><br><span class="line">                       url_prefix=<span class="string">&quot;/admin&quot;</span>,</span><br><span class="line">                       )</span><br><span class="line"><span class="comment"># 参数分别为“蓝图名称”,&quot;静态文件夹目录&quot;,&quot;静态文件夹需要映射到的路由&quot;,&quot;模板文件文件夹&quot;，“为蓝图中所有路由前添加的前缀”</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用蓝图 <code>@admin_view.route(&#39;/&#39;)</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 根目录</span></span><br><span class="line"><span class="meta">@admin_view.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">root</span>():  <span class="comment"># put application&#x27;s code here</span></span><br><span class="line"></span><br><span class="line">    data = dbModel.User.query.filter_by(<span class="built_in">id</span>=<span class="number">1</span>).first()</span><br><span class="line">    name = data.name</span><br><span class="line">    head_portrait_id = data.head_portrait</span><br><span class="line">    head_portrait = dbModel.Pic.query.filter_by(<span class="built_in">id</span>=head_portrait_id).first().data</span><br><span class="line">    head_portrait = base64.b64encode(head_portrait).decode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">    rootPath = current_app.config.get(<span class="string">&#x27;ROOT_PATH&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    data_templates = render_template(<span class="string">&quot;admin_data.html&quot;</span>, rootPath=rootPath, left_page_name_List=left_page_name_List)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;admin_base.html&quot;</span>,</span><br><span class="line">                           head_portrait=head_portrait,</span><br><span class="line">                           name=name,</span><br><span class="line">                           rootPath=rootPath,</span><br><span class="line">                           data_templates=data_templates,</span><br><span class="line">                           )</span><br></pre></td></tr></table></figure>
+
+<h2 id="大型项目构建"><a href="#大型项目构建" class="headerlink" title="大型项目构建"></a>大型项目构建</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">Flask项目文件分配示意图</span><br><span class="line"></span><br><span class="line">项目根目录</span><br><span class="line">|</span><br><span class="line">|——+app(项目文件夹)</span><br><span class="line">|	|</span><br><span class="line">|	|+——api（所有api存放文件夹）</span><br><span class="line">|	|</span><br><span class="line">|	|+——application</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——app.py(这里真正创建app对象，其他文件从这里调用app)</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——extensions.py(导入扩展并初始化)</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——setup.py(这里创建app装配环境变量，路由等等，将app返回)</span><br><span class="line">|	|</span><br><span class="line">|	|+——database</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|+——init_data(存放数据库初始化需要信息)</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——*.db/.sqlite3(数据库文件)</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——dbModel.py(数据库模型)</span><br><span class="line">|	|</span><br><span class="line">|	|+——log（日志）</span><br><span class="line">|	|	</span><br><span class="line">|	|+——models(视图模型的静态文件以及模板)</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|+——admin(后台管理视图)</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|——static</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|——templates</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|——images</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|——fonts</span><br><span class="line">|	|	|	</span><br><span class="line">|	|	|+——login(登录)	</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|+——static</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|+——templates</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|+——images</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|+——fonts</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|+——pc_user(Pc用户)</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|+——static</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|+——templates</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|+——images</span><br><span class="line">|	|	|	|</span><br><span class="line">|	|	|	|+——fonts</span><br><span class="line">|	|	|	</span><br><span class="line">|	|	|+——public（公用静态或模板）</span><br><span class="line">|	|</span><br><span class="line">|	|——tools(编写的公用工具)</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|+——redis（redis数据库）</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——initdb.py(初始化数据库数据)</span><br><span class="line">|	|</span><br><span class="line">|	|+——views(视图)</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——admin.py</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——login.py</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——mc_user.py(手机用户)</span><br><span class="line">|	|	|</span><br><span class="line">|	|	|——pc_user.py（Pc用户）</span><br><span class="line">|	|</span><br><span class="line">|	|——config.py（Flask配置文件）</span><br><span class="line">|</span><br><span class="line">|+——install（存放安装辅助脚本，方便用户安装系统）</span><br><span class="line">|</span><br><span class="line">|+——venv（圩您环境）</span><br><span class="line">|</span><br><span class="line">|——.env（敏感环境变量）</span><br><span class="line">|</span><br><span class="line">|——.flaskenv(普通flask环境变量)</span><br><span class="line">|</span><br><span class="line">|——ReadMe.md(项目自述文件)</span><br><span class="line">|</span><br><span class="line">|——run.py（项目启动脚本）</span><br></pre></td></tr></table></figure>
+<p>下面是具体文件配置<br>根目录我用root代替，上面图示的app文件夹根据我实际情况开发博客我用的是blogApp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root/application/app.py</span></span><br><span class="line"><span class="comment"># 这里真正创建app对象，其他文件从这里调用app</span></span><br><span class="line"><span class="keyword">from</span> blogApp.application.setup <span class="keyword">import</span> create_app</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> redirect, url_for</span><br><span class="line"></span><br><span class="line">app = create_app()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/index&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">root</span>():</span><br><span class="line">    <span class="keyword">return</span> redirect(<span class="string">&quot;/pc&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root/application/extensions.py</span></span><br><span class="line"><span class="comment"># 存放扩展</span></span><br><span class="line"><span class="keyword">from</span> flask_sqlalchemy <span class="keyword">import</span> SQLAlchemy</span><br><span class="line"></span><br><span class="line"><span class="comment"># define global extensions in a separate file so that they can be imported from</span></span><br><span class="line"><span class="comment"># anywhere else in the code without creating circular imports</span></span><br><span class="line"><span class="comment"># the proper initialization is made within the `create_app` function</span></span><br><span class="line">db = SQLAlchemy()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root/application/setup.py</span></span><br><span class="line"><span class="comment"># 这里创建app装配环境变量，路由等等，将app返回</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask_cors <span class="keyword">import</span> CORS</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> blogApp.application.extensions <span class="keyword">import</span> db</span><br><span class="line"><span class="keyword">import</span> blogApp</span><br><span class="line"><span class="keyword">from</span> blogApp <span class="keyword">import</span> config</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_app</span>():</span><br><span class="line">    app: Flask = Flask(import_name=blogApp.__name__)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;app.rootpath(app根路径):&quot;</span>,app.root_path)</span><br><span class="line">    app.config.from_object(config.DevConfig) <span class="comment"># 导入配置</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 相对路劲太坑了，不玩儿了，上绝对吧</span></span><br><span class="line">    app.static_folder = os.path.join(app.config.get(<span class="string">&quot;ROOT_PATH_OBJECT&quot;</span>), <span class="string">r&quot;blogApp\models\public\static&quot;</span>)</span><br><span class="line">    app.template_folder = os.path.join(app.config.get(<span class="string">&quot;ROOT_PATH_OBJECT&quot;</span>), <span class="string">r&quot;blogApp\models\public\templates&quot;</span>)</span><br><span class="line"></span><br><span class="line">    app.secret_key = os.getenv(<span class="string">&#x27;SECRET_KEY&#x27;</span>) <span class="comment"># 导入秘钥</span></span><br><span class="line">    CORS(app, resources=&#123;<span class="string">r&quot;/*&quot;</span>: &#123;<span class="string">&quot;origins&quot;</span>: <span class="string">&quot;*&quot;</span>&#125;&#125;&#123;% endraw %&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Initialize extensions</span></span><br><span class="line">    <span class="comment"># 初始化数据库</span></span><br><span class="line">    db.init_app(app)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> app.app_context():</span><br><span class="line">        <span class="comment"># 自动初始化数据库</span></span><br><span class="line">        <span class="keyword">from</span> blogApp.tools.initdb <span class="keyword">import</span> initdb</span><br><span class="line">        initdb()</span><br><span class="line">        <span class="comment"># 添加jinji2全局方法</span></span><br><span class="line">        <span class="keyword">from</span> blogApp.application.template_global <span class="keyword">import</span> strlen</span><br><span class="line">        app.add_template_global(strlen, <span class="string">&#x27;strlen&#x27;</span>)</span><br><span class="line">        <span class="comment"># Register Blueprints</span></span><br><span class="line">        <span class="comment"># 注册蓝图</span></span><br><span class="line">        <span class="keyword">from</span> blogApp.views.pc_user <span class="keyword">import</span> pc_user_view</span><br><span class="line">        <span class="keyword">from</span> blogApp.views.admin <span class="keyword">import</span> admin_view</span><br><span class="line">        <span class="keyword">from</span> blogApp.api.pc_user_api <span class="keyword">import</span> pc_user_api</span><br><span class="line">        <span class="keyword">from</span> blogApp.views.login <span class="keyword">import</span> login_view</span><br><span class="line">        app.register_blueprint(pc_user_view)</span><br><span class="line">        app.register_blueprint(login_view)</span><br><span class="line">        app.register_blueprint(admin_view)</span><br><span class="line">        app.register_blueprint(pc_user_api)</span><br><span class="line">        <span class="keyword">return</span> app</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root/blogApp/database/dbModel.py</span></span><br><span class="line"><span class="comment"># 数据库模型</span></span><br><span class="line"><span class="keyword">from</span> blogApp.application.extensions <span class="keyword">import</span> db</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Article</span>(db.Model):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    文章</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer, primary_key=<span class="literal">True</span>)</span><br><span class="line">    author = db.Column(db.String(<span class="number">80</span>),nullable=<span class="literal">False</span>) <span class="comment"># 作者</span></span><br><span class="line">    copyright = db.Column(db.Integer,nullable=<span class="literal">False</span>) <span class="comment"># 版权</span></span><br><span class="line">    title = db.Column(db.String(<span class="number">120</span>),nullable=<span class="literal">False</span>) <span class="comment"># 标题</span></span><br><span class="line">    outline = db.Column(db.String(<span class="number">255</span>),nullable=<span class="literal">False</span>) <span class="comment"># 概要</span></span><br><span class="line">    content = db.Column(db.Text) <span class="comment"># 内容</span></span><br><span class="line">    creatDate = db.Column(db.Date,nullable=<span class="literal">False</span>) <span class="comment"># 创建日期</span></span><br><span class="line">    updateDate = db.Column(db.Date,nullable=<span class="literal">False</span>) <span class="comment"># 更新日期</span></span><br><span class="line">    album = db.Column(db.Text) <span class="comment"># 专辑</span></span><br><span class="line">    source = db.Column(db.String(<span class="number">5</span>),nullable=<span class="literal">False</span>) <span class="comment"># 来源</span></span><br><span class="line">    sort = db.Column(db.Integer,nullable=<span class="literal">False</span>) <span class="comment"># 分类</span></span><br><span class="line">    tag = db.Column(db.Text) <span class="comment"># 标签</span></span><br><span class="line">    cover = db.Column(db.Integer,nullable=<span class="literal">False</span>) <span class="comment"># 封面图</span></span><br><span class="line">    state = db.Column(db.Integer, nullable=<span class="literal">False</span>) <span class="comment"># 状态</span></span><br><span class="line">    readnum = db.Column(db.Integer, nullable=<span class="literal">True</span>) <span class="comment"># 阅读量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Drafts</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer, primary_key=<span class="literal">True</span>)</span><br><span class="line">    title = db.Column(db.String(<span class="number">120</span>), nullable=<span class="literal">False</span>)  <span class="comment"># 标题</span></span><br><span class="line">    content = db.Column(db.Text)  <span class="comment"># 内容</span></span><br><span class="line">    creatDate = db.Column(db.Date, nullable=<span class="literal">False</span>)  <span class="comment"># 创建日期</span></span><br><span class="line">    updateDate = db.Column(db.Date, nullable=<span class="literal">False</span>)  <span class="comment"># 更新日期</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tag_index</span>(db.Model):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    标签索引</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key=<span class="literal">True</span>) <span class="comment"># id</span></span><br><span class="line">    name = db.Column(db.String(<span class="number">80</span>),nullable=<span class="literal">False</span>) <span class="comment"># 名称</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Sort_index</span>(db.Model):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    分类索引</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key=<span class="literal">True</span>) <span class="comment"># id</span></span><br><span class="line">    name = db.Column(db.String(<span class="number">80</span>),nullable=<span class="literal">False</span>) <span class="comment"># 名称</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Album_index</span>(db.Model):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    专辑索引</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key=<span class="literal">True</span>) <span class="comment"># id</span></span><br><span class="line">    name = db.Column(db.String(<span class="number">80</span>),nullable=<span class="literal">False</span>) <span class="comment"># 名称</span></span><br><span class="line">    outline = db.Column(db.String(<span class="number">255</span>), nullable=<span class="literal">False</span>)  <span class="comment"># 概要</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Copyright_index</span>(db.Model):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    版权索引</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key=<span class="literal">True</span>) <span class="comment"># id</span></span><br><span class="line">    name = db.Column(db.String(<span class="number">80</span>),nullable=<span class="literal">False</span>) <span class="comment"># 名称</span></span><br><span class="line">    link = db.Column(db.String(<span class="number">255</span>), nullable=<span class="literal">False</span>) <span class="comment"># 链接</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Pic</span>(db.Model):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    图片</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key=<span class="literal">True</span>) <span class="comment"># id</span></span><br><span class="line">    name = db.Column(db.String(<span class="number">255</span>), nullable=<span class="literal">False</span>) <span class="comment"># name</span></span><br><span class="line">    data = db.Column(db.LargeBinary,nullable=<span class="literal">False</span>)  <span class="comment"># 封面图</span></span><br><span class="line">    <span class="built_in">type</span> = db.Column(db.Text,nullable=<span class="literal">False</span>) <span class="comment"># 类型,jpg/png</span></span><br><span class="line">    sort = db.Column(db.Integer,nullable=<span class="literal">False</span>) <span class="comment"># 文章还是其他(0/1)</span></span><br><span class="line">    alt = db.Column(db.Text,nullable=<span class="literal">False</span>) <span class="comment"># 提示信息</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>(db.Model):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    用户表</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key=<span class="literal">True</span>) <span class="comment"># id</span></span><br><span class="line">    name = db.Column(db.String(<span class="number">80</span>),nullable=<span class="literal">False</span>) <span class="comment"># 昵称</span></span><br><span class="line">    account = db.Column(db.String(<span class="number">120</span>),nullable=<span class="literal">False</span>) <span class="comment"># 账号</span></span><br><span class="line">    password = db.Column(db.String(<span class="number">120</span>),nullable=<span class="literal">False</span>) <span class="comment"># 密码</span></span><br><span class="line">    email = db.Column(db.String(<span class="number">120</span>)) <span class="comment"># 邮箱</span></span><br><span class="line">    head_portrait = db.Column(db.Integer,nullable=<span class="literal">False</span>) <span class="comment"># 头像图片id</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Token</span>(db.Model):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    cookie token表</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key=<span class="literal">True</span>) <span class="comment"># id</span></span><br><span class="line">    accountId = db.Column(db.Integer) <span class="comment"># 对应账户id</span></span><br><span class="line">    token = db.Column(db.String(<span class="number">64</span>),nullable=<span class="literal">False</span>) <span class="comment"># token</span></span><br><span class="line">    creatTime = db.Column(db.DateTime,nullable=<span class="literal">False</span>) <span class="comment"># 创建时间</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Friends_link</span>(db.Model):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    友链表</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key=<span class="literal">True</span>) <span class="comment"># id</span></span><br><span class="line">    name = db.Column(db.String(<span class="number">256</span>),nullable=<span class="literal">False</span>) <span class="comment"># 标题</span></span><br><span class="line">    url = db.Column(db.String(<span class="number">256</span>),nullable=<span class="literal">False</span>) <span class="comment"># 链接</span></span><br><span class="line">    img = db.Column(db.String(<span class="number">256</span>), nullable=<span class="literal">False</span>)  <span class="comment"># 头像图片地址</span></span><br><span class="line">    describe = db.Column(db.Text, nullable=<span class="literal">False</span>)  <span class="comment"># 描述</span></span><br><span class="line">    email = db.Column(db.Text, nullable=<span class="literal">False</span>)  <span class="comment"># 描述</span></span><br><span class="line">    state = db.Column(db.Integer, nullable=<span class="literal">False</span>)  <span class="comment"># 状态 0 正常 1 失效  2 申请添加 3 优质友链</span></span><br><span class="line">    message = db.Column(db.Text, nullable=<span class="literal">False</span>)  <span class="comment"># 留言</span></span><br><span class="line">    response_time = db.Column(db.Integer,nullable=<span class="literal">False</span>) <span class="comment"># 响应时间</span></span><br><span class="line">    applyDateTime = db.Column(db.DateTime,nullable=<span class="literal">False</span>) <span class="comment"># 申请时间</span></span><br><span class="line">    addDataTime = db.Column(db.DateTime,nullable=<span class="literal">False</span>) <span class="comment"># 添加时间</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root/blogApp/tools/initdb.py</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">用于初始化database</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">顺序不能改先导入db，之后导入app这个过程创建了app并初始化db，最后调用dbModel（他需要等app，db都创建好了才能用）</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">from</span> blogApp.application.extensions <span class="keyword">import</span> db</span><br><span class="line"><span class="keyword">from</span> blogApp.database <span class="keyword">import</span> dbModel</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> click</span><br><span class="line"></span><br><span class="line"><span class="comment">#@app.cli.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">initdb</span>():</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;初始化数据库&#x27;&#x27;&#x27;</span></span><br><span class="line">    db.create_all()</span><br><span class="line">    <span class="comment"># 默认添加三个分类项目</span></span><br><span class="line">    <span class="keyword">if</span> dbModel.Sort_index.query.<span class="built_in">all</span>() == []:</span><br><span class="line">        sort1 = dbModel.Sort_index(name=<span class="string">&quot;技术&quot;</span>)</span><br><span class="line">        sort2 = dbModel.Sort_index(name=<span class="string">&quot;折腾&quot;</span>)</span><br><span class="line">        sort3 = dbModel.Sort_index(name=<span class="string">&quot;文章&quot;</span>)</span><br><span class="line">        sort4 = dbModel.Sort_index(name=<span class="string">&quot;生活&quot;</span>)</span><br><span class="line">        db.session.add(sort1)</span><br><span class="line">        db.session.add(sort2)</span><br><span class="line">        db.session.add(sort3)</span><br><span class="line">        db.session.add(sort4)</span><br><span class="line">    <span class="comment"># 默认添加几个标签</span></span><br><span class="line">    <span class="keyword">if</span> dbModel.Tag_index.query.<span class="built_in">all</span>() == []:</span><br><span class="line">        tag1 = dbModel.Tag_index(name=<span class="string">&quot;Python基础&quot;</span>)</span><br><span class="line">        tag2 = dbModel.Tag_index(name=<span class="string">&quot;前端&quot;</span>)</span><br><span class="line">        tag3 = dbModel.Tag_index(name=<span class="string">&quot;后端&quot;</span>)</span><br><span class="line">        tag4 = dbModel.Tag_index(name=<span class="string">&quot;恋爱&quot;</span>)</span><br><span class="line">        db.session.add(tag1)</span><br><span class="line">        db.session.add(tag2)</span><br><span class="line">        db.session.add(tag3)</span><br><span class="line">        db.session.add(tag4)</span><br><span class="line">    <span class="comment"># 默认添加几个文章版权信息</span></span><br><span class="line">    <span class="keyword">if</span> dbModel.Copyright_index.query.<span class="built_in">all</span>() == []:</span><br><span class="line">        copyright1 = dbModel.Copyright_index(name=<span class="string">&quot;BSD（Berkeley Software Distribution license）&quot;</span>, link=<span class="string">&quot;https://upimg.baike.so.com/doc/352283-373141.html&quot;</span>)</span><br><span class="line">        copyright2 = dbModel.Copyright_index(name=<span class="string">&quot;MIT（Massachusetts Institute of Technology）&quot;</span>, link=<span class="string">&quot;https://opensource.org/licenses/MIT&quot;</span>)</span><br><span class="line">        copyright3 = dbModel.Copyright_index(name=<span class="string">&quot;Apache Licence 2.0&quot;</span>, link=<span class="string">&quot;https://www.apache.org/licenses/LICENSE-2.0.html&quot;</span>)</span><br><span class="line">        copyright4 = dbModel.Copyright_index(name=<span class="string">&quot;GPL（General Public License）&quot;</span>, link=<span class="string">&quot;https://getrebuild.com/legal/license&quot;</span>)</span><br><span class="line">        copyright5 = dbModel.Copyright_index(name=<span class="string">&quot;LGPL（Lesser General Public License）&quot;</span>, link=<span class="string">&quot;https://opensource.org/licenses/lgpl-license&quot;</span>)</span><br><span class="line">        copyright6 = dbModel.Copyright_index(name=<span class="string">&quot;Mozilla（Mozilla Public License）&quot;</span>, link=<span class="string">&quot;https://www.mozilla.org/en-US/MPL/2.0/&quot;</span>)</span><br><span class="line">        db.session.add(copyright1)</span><br><span class="line">        db.session.add(copyright2)</span><br><span class="line">        db.session.add(copyright3)</span><br><span class="line">        db.session.add(copyright4)</span><br><span class="line">        db.session.add(copyright5)</span><br><span class="line">        db.session.add(copyright6)</span><br><span class="line">    <span class="comment"># 默认为Pic添加几张图片</span></span><br><span class="line">    <span class="keyword">if</span> dbModel.Pic.query.<span class="built_in">all</span>() == []:</span><br><span class="line">        <span class="comment"># 默认封图</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;blogApp/database/init_data/cover.jpeg&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> p:</span><br><span class="line">            data = p.read()</span><br><span class="line">        pic1 = dbModel.Pic(name=<span class="string">&quot;文章默认封面图&quot;</span>,data=data, <span class="built_in">type</span>=<span class="string">&quot;jpg&quot;</span>, sort=<span class="number">0</span>, alt=<span class="string">&quot;我为我代言&quot;</span>)</span><br><span class="line">        db.session.add(pic1)</span><br><span class="line">        <span class="comment"># 默认头像</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;blogApp/database/init_data/head_portrait.jpg&quot;</span>,<span class="string">&quot;rb&quot;</span>)<span class="keyword">as</span> p:</span><br><span class="line">            data = p.read()</span><br><span class="line">        pic2 = dbModel.Pic(name=<span class="string">&quot;默认博主头像&quot;</span>,data=data, <span class="built_in">type</span>=<span class="string">&quot;jpg&quot;</span>,sort=<span class="number">1</span>,alt=<span class="string">&quot;头像&quot;</span>)</span><br><span class="line">        db.session.add(pic2)</span><br><span class="line">    <span class="comment"># 添加管理账户</span></span><br><span class="line">    <span class="keyword">if</span> dbModel.User.query.<span class="built_in">all</span>() == []:</span><br><span class="line">        user = dbModel.User(name=<span class="string">&quot;I Speak for myself&quot;</span>, account=<span class="string">&quot;2061360308&quot;</span>,</span><br><span class="line">                                     password=<span class="string">&quot;123456&quot;</span>, email=<span class="literal">None</span>, head_portrait=<span class="number">1</span>)</span><br><span class="line">        db.session.add(user)</span><br><span class="line">    db.session.commit()</span><br><span class="line">    click.echo(<span class="string">&#x27;Initiali zed database.(数据库初始化完毕)&#x27;</span>)</span><br><span class="line">    <span class="comment"># 添加测试文章数据</span></span><br><span class="line">    <span class="keyword">if</span> dbModel.Article.query.<span class="built_in">all</span>() == []:</span><br><span class="line">        author = <span class="string">&quot;卢澳&quot;</span></span><br><span class="line">        Article1 = dbModel.Article(author=author,</span><br><span class="line">                                   copyright = <span class="number">0</span>,</span><br><span class="line">                                   title=<span class="string">&quot;测试文章一&quot;</span>,</span><br><span class="line">                                   outline=<span class="string">&quot;这是测试文章&quot;</span>,</span><br><span class="line">                                   content=<span class="string">&quot;&quot;</span>,</span><br><span class="line">                                   creatDate=datetime.datetime.now(),</span><br><span class="line">                                   updateDate=datetime.datetime.now(),</span><br><span class="line">                                   album=<span class="literal">None</span>,</span><br><span class="line">                                   source=<span class="string">&quot;原创&quot;</span>,</span><br><span class="line">                                   sort=<span class="number">1</span>,</span><br><span class="line">                                   tag=<span class="literal">None</span>,</span><br><span class="line">                                   cover=<span class="number">1</span>,</span><br><span class="line">                                   state=<span class="number">0</span>,</span><br><span class="line">                                   readnum=<span class="number">0</span>,</span><br><span class="line">                                   )</span><br><span class="line">        Article2 = dbModel.Article(author=author,</span><br><span class="line">                                   copyright=<span class="number">0</span>,</span><br><span class="line">                                   title=<span class="string">&quot;测试文章二&quot;</span>,</span><br><span class="line">                                   outline=<span class="string">&quot;这是测试文章&quot;</span>,</span><br><span class="line">                                   content=<span class="string">&quot;&quot;</span>,</span><br><span class="line">                                   creatDate=datetime.datetime.now(),</span><br><span class="line">                                   updateDate=datetime.datetime.now(),</span><br><span class="line">                                   album=<span class="literal">None</span>,</span><br><span class="line">                                   source=<span class="string">&quot;原创&quot;</span>,</span><br><span class="line">                                   sort=<span class="number">1</span>,</span><br><span class="line">                                   tag=<span class="literal">None</span>,</span><br><span class="line">                                   cover=<span class="number">1</span>,</span><br><span class="line">                                   state=<span class="number">0</span>,</span><br><span class="line">                                   readnum=<span class="number">0</span>,</span><br><span class="line">                                   )</span><br><span class="line">        Article3 = dbModel.Article(author=author,</span><br><span class="line">                                   copyright=<span class="number">0</span>,</span><br><span class="line">                                   title=<span class="string">&quot;测试文章三&quot;</span>,</span><br><span class="line">                                   outline=<span class="string">&quot;这是测试文章&quot;</span>,</span><br><span class="line">                                   content=<span class="string">&quot;&quot;</span>,</span><br><span class="line">                                   creatDate=datetime.datetime.now(),</span><br><span class="line">                                   updateDate=datetime.datetime.now(),</span><br><span class="line">                                   album=<span class="literal">None</span>,</span><br><span class="line">                                   source=<span class="string">&quot;原创&quot;</span>,</span><br><span class="line">                                   sort=<span class="number">1</span>,</span><br><span class="line">                                   tag=<span class="literal">None</span>,</span><br><span class="line">                                   cover=<span class="number">1</span>,</span><br><span class="line">                                   state=<span class="number">0</span>,</span><br><span class="line">                                   readnum=<span class="number">0</span>,</span><br><span class="line">                                   )</span><br><span class="line">        Article4 = dbModel.Article(author=author,</span><br><span class="line">                                   copyright=<span class="number">0</span>,</span><br><span class="line">                                   title=<span class="string">&quot;测试文章四&quot;</span>,</span><br><span class="line">                                   outline=<span class="string">&quot;这是测试文章&quot;</span>,</span><br><span class="line">                                   content=<span class="string">&quot;&quot;</span>,</span><br><span class="line">                                   creatDate=datetime.datetime.now(),</span><br><span class="line">                                   updateDate=datetime.datetime.now(),</span><br><span class="line">                                   album=<span class="literal">None</span>,</span><br><span class="line">                                   source=<span class="string">&quot;原创&quot;</span>,</span><br><span class="line">                                   sort=<span class="number">1</span>,</span><br><span class="line">                                   tag=<span class="literal">None</span>,</span><br><span class="line">                                   cover=<span class="number">1</span>,</span><br><span class="line">                                   state=<span class="number">0</span>,</span><br><span class="line">                                   readnum=<span class="number">0</span>,</span><br><span class="line">                                   )</span><br><span class="line">        Article5 = dbModel.Article(author=author,</span><br><span class="line">                                   copyright=<span class="number">0</span>,</span><br><span class="line">                                   title=<span class="string">&quot;测试文章五&quot;</span>,</span><br><span class="line">                                   outline=<span class="string">&quot;这是测试文章&quot;</span>,</span><br><span class="line">                                   content=<span class="string">&quot;&quot;</span>,</span><br><span class="line">                                   creatDate=datetime.datetime.now(),</span><br><span class="line">                                   updateDate=datetime.datetime.now(),</span><br><span class="line">                                   album=<span class="literal">None</span>,</span><br><span class="line">                                   source=<span class="string">&quot;原创&quot;</span>,</span><br><span class="line">                                   sort=<span class="number">1</span>,</span><br><span class="line">                                   tag=<span class="literal">None</span>,</span><br><span class="line">                                   cover=<span class="number">1</span>,</span><br><span class="line">                                   state=<span class="number">0</span>,</span><br><span class="line">                                   readnum=<span class="number">0</span>,</span><br><span class="line">                                   )</span><br><span class="line">        Article6 = dbModel.Article(author=author,</span><br><span class="line">                                   copyright=<span class="number">0</span>,</span><br><span class="line">                                   title=<span class="string">&quot;测试文章六&quot;</span>,</span><br><span class="line">                                   outline=<span class="string">&quot;这是测试文章&quot;</span>,</span><br><span class="line">                                   content=<span class="string">&quot;&quot;</span>,</span><br><span class="line">                                   creatDate=datetime.datetime.now(),</span><br><span class="line">                                   updateDate=datetime.datetime.now(),</span><br><span class="line">                                   album=<span class="literal">None</span>,</span><br><span class="line">                                   source=<span class="string">&quot;原创&quot;</span>,</span><br><span class="line">                                   sort=<span class="number">1</span>,</span><br><span class="line">                                   tag=<span class="literal">None</span>,</span><br><span class="line">                                   cover=<span class="number">1</span>,</span><br><span class="line">                                   state=<span class="number">0</span>,</span><br><span class="line">                                   readnum=<span class="number">0</span>,</span><br><span class="line">                                   )</span><br><span class="line">        db.session.add(Article1)</span><br><span class="line">        db.session.add(Article2)</span><br><span class="line">        db.session.add(Article3)</span><br><span class="line">        db.session.add(Article4)</span><br><span class="line">        db.session.add(Article5)</span><br><span class="line">        db.session.add(Article6)</span><br><span class="line">        db.session.commit()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 添加测试友链申请</span></span><br><span class="line">    <span class="keyword">if</span> dbModel.Friends_link.query.<span class="built_in">all</span>() == []:</span><br><span class="line">        apply1 = dbModel.Friends_link(name=<span class="string">&quot;XX小站&quot;</span>,</span><br><span class="line">                                      url=<span class="string">&quot;https://baidu.com&quot;</span>,</span><br><span class="line">                                      img=<span class="string">&quot;img.com&quot;</span>,</span><br><span class="line">                                      describe=<span class="string">&quot;测试小站&quot;</span>,</span><br><span class="line">                                      email=<span class="string">&quot;2061360308@qq.com&quot;</span>,</span><br><span class="line">                                      state=<span class="number">2</span>,</span><br><span class="line">                                      message=<span class="string">&quot;加下友链&quot;</span>,</span><br><span class="line">                                      response_time=<span class="number">5</span>,</span><br><span class="line">                                      applyDateTime=datetime.datetime.now(),</span><br><span class="line">                                      addDataTime=datetime.datetime.now(),</span><br><span class="line">                                      )</span><br><span class="line">        db.session.add(apply1)</span><br><span class="line">        db.session.commit()</span><br><span class="line">    click.echo(<span class="string">&quot;测试数据载入完毕！&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># root/blogApp/views/admin.py</span><br><span class="line"># 后端视图</span><br><span class="line"># 这里只给一个后端蓝图创建的例子，具体根据实际情况</span><br><span class="line">import base64</span><br><span class="line">import datetime</span><br><span class="line">import uuid</span><br><span class="line"></span><br><span class="line">from flask import Blueprint, render_template, abort, url_for, \</span><br><span class="line">    current_app, jsonify, request, redirect, session</span><br><span class="line"></span><br><span class="line">from blogApp.database import dbModel</span><br><span class="line">from blogApp.tools.IndexData import indexData</span><br><span class="line">from blogApp.tools.check_power import checkLoginState</span><br><span class="line">from blogApp.application.extensions import db</span><br><span class="line">from blogApp.tools.check_power import checkLoginState</span><br><span class="line"></span><br><span class="line">admin_view = Blueprint(name=&#x27;admin_view&#x27;,</span><br><span class="line">                       import_name=__name__,</span><br><span class="line">                       static_folder=&quot;../models/admin/static&quot;,</span><br><span class="line">                       static_url_path=&quot;/admin_static&quot;,</span><br><span class="line">                       template_folder=&#x27;../models/admin/templates&#x27;,</span><br><span class="line">                       url_prefix=&quot;/admin&quot;,</span><br><span class="line">                       )</span><br><span class="line"># 根目录</span><br><span class="line">@admin_view.route(&#x27;/&#x27;)</span><br><span class="line">def root():  # put application&#x27;s code here</span><br><span class="line"></span><br><span class="line">    data = dbModel.User.query.filter_by(id=1).first()</span><br><span class="line">    name = data.name</span><br><span class="line">    head_portrait_id = data.head_portrait</span><br><span class="line">    head_portrait = dbModel.Pic.query.filter_by(id=head_portrait_id).first().data</span><br><span class="line">    head_portrait = base64.b64encode(head_portrait).decode(&quot;utf-8&quot;)</span><br><span class="line">    rootPath = current_app.config.get(&#x27;ROOT_PATH&#x27;)</span><br><span class="line"></span><br><span class="line">    data_templates = render_template(&quot;admin_data.html&quot;, rootPath=rootPath, left_page_name_List=left_page_name_List)</span><br><span class="line"></span><br><span class="line">    return render_template(&quot;admin_base.html&quot;,</span><br><span class="line">                           head_portrait=head_portrait,</span><br><span class="line">                           name=name,</span><br><span class="line">                           rootPath=rootPath,</span><br><span class="line">                           data_templates=data_templates,</span><br><span class="line">                           )</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root/blogApp/__init__.py</span></span><br><span class="line"><span class="comment"># 包文件，导出app</span></span><br><span class="line"><span class="keyword">from</span> blogApp.application <span class="keyword">import</span> app</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root/blogApp/config.py</span></span><br><span class="line"><span class="comment"># 配置文件，这个其实可以放在很多中格式的文件里的，我这里给出一个py的例子</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BaseConfig</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    公用配置</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    ROOT_PATH_OBJECT = <span class="string">r&quot;E:\speakForMyself&quot;</span> <span class="comment"># 项目根目录</span></span><br><span class="line">    ROOT_PATH = <span class="string">&quot;http://127.0.0.1:5000/&quot;</span> <span class="comment"># 网络环境根目录</span></span><br><span class="line">    SESSION_TYPE = <span class="string">&#x27;filesystem&#x27;</span>  <span class="comment"># session类型为filesystem</span></span><br><span class="line">    LOGIN_COOKIE_NAME = <span class="string">&#x27;identity_token&#x27;</span> <span class="comment"># 登录后身份session的键值名称</span></span><br><span class="line">    SQLALCHEMY_TRACK_MODIFICATIONS = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TestConfig</span>(<span class="title class_ inherited__">BaseConfig</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    测试环境</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DevConfig</span>(<span class="title class_ inherited__">BaseConfig</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    开发环境</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    SQLALCHEMY_DATABASE_URI = <span class="string">&#x27;sqlite:///E:/speakForMyself/blogApp/database/data.sqlite3&#x27;</span> <span class="comment"># 数据库位置</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ProConfig</span>(<span class="title class_ inherited__">BaseConfig</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    正式环境</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># root/.env</span><br><span class="line"></span><br><span class="line">#秘钥</span><br><span class="line">SECRET_KEY=089de6ba-7874-11ed-8134-e4fd453f23ec</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># root/.flaskenv</span><br><span class="line"></span><br><span class="line"># FLASK_ENV 变量代表运行时的环境时开发环境(development)还是生产环境(production)</span><br><span class="line">FLASK_DEBUG=1</span><br><span class="line"># FLASK_DEBUG 变量代表是否开启调试器开启1关闭0,开发模式下默认开启,不建议手动操作此项目</span><br><span class="line"># FLASK_DEBUG=1</span><br><span class="line"># FLASK_APP 变量代表执行flask run命令时要运行的应用文件</span><br><span class="line">FLASK_APP=run.py</span><br><span class="line"># FLASK_RUN_HOST 变量代表运行的host 0.0.0.0代表外部计算机访问/127.0.0.1代表本机访问</span><br><span class="line">FLASK_RUN_HOST=0.0.0.0</span><br><span class="line"># FLASK_RUN_PORT 变量代表监听的端口默认5000</span><br><span class="line">FLASK_RUN_PORT=5000</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root/run.py</span></span><br><span class="line"><span class="comment"># 启动文件</span></span><br><span class="line"><span class="keyword">from</span> blogApp.application.app <span class="keyword">import</span> app</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>盧瞳<br>
+        <strong>本文链接：</strong><a href="http://blog.1think2program.cn/2023/01/02/%E6%8A%80%E6%9C%AF/Flask%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" title="http:&#x2F;&#x2F;blog.1think2program.cn&#x2F;2023&#x2F;01&#x2F;02&#x2F;%E6%8A%80%E6%9C%AF&#x2F;Flask%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;blog.1think2program.cn&#x2F;2023&#x2F;01&#x2F;02&#x2F;%E6%8A%80%E6%9C%AF&#x2F;Flask%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+    
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <div id="waline"></div>
+<script src='https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js'></script>
+<script>
+	const locale={
+			placeholder:"欢迎大家留言交流，能交到更多朋友不正是搭建博客的价值吗\n📌小提示：\n1. 评论和回复支持Markdown\n2. 可以的话请写邮箱，方便接收评论回复提醒"
+			};
+    Waline({
+        el: '#waline',
+        serverURL: 'https://app-production-41a7.up.railway.app',
+		locale:locale,
+		emoji: [
+			'//unpkg.com/@waline/emojis@1.1.0/weibo',
+			'//unpkg.com/@waline/emojis@1.1.0/bilibili',
+		]
+    });
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">2.</span> <span class="toc-text">环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pipenv"><span class="toc-number">2.1.</span> <span class="toc-text">Pipenv</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Pipenv%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.1.</span> <span class="toc-text">Pipenv介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83"><span class="toc-number">2.1.3.</span> <span class="toc-text">创建虚拟环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E4%BE%9D%E8%B5%96"><span class="toc-number">2.1.4.</span> <span class="toc-text">管理依赖</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Flask"><span class="toc-number">2.2.</span> <span class="toc-text">安装Flask</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85python-dotenv%E7%AE%A1%E7%90%86%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">2.3.</span> <span class="toc-text">安装python-dotenv管理环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85watchdog%E8%8E%B7%E5%8F%96%E6%9B%B4%E5%A5%BD%E7%9A%84%E8%B0%83%E8%AF%95%E4%BD%93%E9%AA%8C"><span class="toc-number">2.4.</span> <span class="toc-text">安装watchdog获取更好的调试体验</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flask%E5%9F%BA%E7%A1%80"><span class="toc-number">3.</span> <span class="toc-text">Flask基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#flask%E5%9F%BA%E6%9C%AC%E6%A8%A1%E5%BC%8F%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.1.</span> <span class="toc-text">flask基本模式示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text">启动开发服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8F%91%E7%8E%B0%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%A7%84%E5%88%99"><span class="toc-number">3.2.1.</span> <span class="toc-text">自动发现程序的规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%A1%E7%90%86%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">3.2.2.</span> <span class="toc-text">管理环境变量</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%80%89%E9%A1%B9-%E6%89%A9%E5%B1%95%E8%AF%AD%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text">启动选项-扩展语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flask-Shell"><span class="toc-number">3.4.</span> <span class="toc-text">Flask Shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flask%E6%89%A9%E5%B1%95"><span class="toc-number">3.5.</span> <span class="toc-text">Flask扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E9%85%8D%E7%BD%AE"><span class="toc-number">3.6.</span> <span class="toc-text">项目配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#url-for-%E5%87%BD%E6%95%B0"><span class="toc-number">3.7.</span> <span class="toc-text">url_for()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89Flask%E5%91%BD%E4%BB%A4"><span class="toc-number">3.8.</span> <span class="toc-text">自定义Flask命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E4%B8%8E%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6"><span class="toc-number">3.9.</span> <span class="toc-text">模板与静态文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flask%E8%BF%9B%E9%98%B6"><span class="toc-number">4.</span> <span class="toc-text">Flask进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Reques%E5%AF%B9%E8%B1%A1"><span class="toc-number">4.1.</span> <span class="toc-text">Reques对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Request%E7%9A%84%E5%B1%9E%E6%80%A7%E8%8E%B7%E5%8F%96%E8%AF%B7%E6%B1%82%E7%9A%84URL"><span class="toc-number">4.1.1.</span> <span class="toc-text">使用Request的属性获取请求的URL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Request%E5%AF%B9%E8%B1%A1%E5%B8%B8%E7%94%A8%E7%9A%84%E5%B1%9E%E6%80%A7%E5%92%8C%E6%96%B9%E6%B3%95"><span class="toc-number">4.1.2.</span> <span class="toc-text">Request对象常用的属性和方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82"><span class="toc-number">4.2.</span> <span class="toc-text">处理请求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E7%9B%91%E5%90%AC%E7%9A%84HTTP%E6%96%B9%E6%B3%95"><span class="toc-number">4.2.1.</span> <span class="toc-text">设置监听的HTTP方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#URL%E5%A4%84%E7%90%86"><span class="toc-number">4.2.2.</span> <span class="toc-text">URL处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E9%92%A9%E5%AD%90"><span class="toc-number">4.2.3.</span> <span class="toc-text">请求钩子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E5%93%8D%E5%BA%94"><span class="toc-number">4.2.4.</span> <span class="toc-text">生成响应</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">4.2.5.</span> <span class="toc-text">重定向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%93%8D%E5%BA%94"><span class="toc-number">4.2.6.</span> <span class="toc-text">错误响应</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jsonify-%E5%87%BD%E6%95%B0"><span class="toc-number">4.2.7.</span> <span class="toc-text">jsonify()函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Cookie"><span class="toc-number">4.3.</span> <span class="toc-text">使用Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEcookie"><span class="toc-number">4.3.1.</span> <span class="toc-text">设置cookie</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96cookie"><span class="toc-number">4.3.2.</span> <span class="toc-text">读取cookie</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#session%EF%BC%9A%E6%9B%B4%E5%8A%A0%E5%AE%89%E5%85%A8%E7%9A%84cookie"><span class="toc-number">4.4.</span> <span class="toc-text">session：更加安全的cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Falsk%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-number">4.5.</span> <span class="toc-text">Falsk上下文</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JinJia2"><span class="toc-number">5.</span> <span class="toc-text">JinJia2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">5.2.</span> <span class="toc-text">过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF"><span class="toc-number">5.3.</span> <span class="toc-text">循环</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%88%97%E8%A1%A8"><span class="toc-number">5.3.1.</span> <span class="toc-text">迭代列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%AD%97%E5%85%B8"><span class="toc-number">5.3.2.</span> <span class="toc-text">迭代字典</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD-if%E8%AF%AD%E5%8F%A5%E4%BD%BF%E7%94%A8"><span class="toc-number">5.4.</span> <span class="toc-text">判断 if语句使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jinja2%E7%9A%84%E5%AE%8F"><span class="toc-number">5.5.</span> <span class="toc-text">jinja2的宏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jinja2%E7%9A%84%E7%BB%A7%E6%89%BF%E5%92%8CSuper%E5%87%BD%E6%95%B0"><span class="toc-number">5.6.</span> <span class="toc-text">jinja2的继承和Super函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flask-%E8%93%9D%E5%9B%BE"><span class="toc-number">6.</span> <span class="toc-text">Flask 蓝图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E5%9E%8B%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA"><span class="toc-number">7.</span> <span class="toc-text">大型项目构建</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    
+<script src="/lib/mdui_043tiny/mdui.js"></script>
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/justifiedGallery/jquery.justifiedGallery.min.js"></script>
+<script src="/lib/fancybox/fancybox.umd.js"></script>
+
+
+ 
+
+<script async src="/js/app.js?v=1674490319280"></script>
+
+
+
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+
+
+
+
+</body>
+
+</html>
