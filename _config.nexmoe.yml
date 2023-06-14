@@ -1,10 +1,10 @@
-avatar: https://gallery-1303709080.cos.ap-chengdu.myqcloud.com/hexo-blog/head.jpg # 网站 Logo
+avatar: /images/head.jpg # 网站 Logo
 background: # 既是博客的背景，又是文章默认头图
-  path: https://gallery-1303709080.cos.ap-chengdu.myqcloud.com/hexo-blog/article-bg.jpg
+  path: /images/article-bg.jpg
   width: 1440
   height: 480
 favicon:
-  href: https://gallery-1303709080.cos.ap-chengdu.myqcloud.com/hexo-blog/head.jpg # 网站图标
+  href: /images/head.jpg # 网站图标
   type: image/x-icon # 图标类型，可能的值有(image/png, image/vnd.microsoft.icon, image/x-icon, image/gif)
 
 function: # 功能开关，可选值（true,false）
@@ -12,20 +12,20 @@ function: # 功能开关，可选值（true,false）
   wordCount: true # 是否开启文章字数统计 (true, false)
 
 imageCDN: # 图片 CDN 功能
-  enable: false # 开启该功能  
+  enable: false # 开启该功能
   origin: /../../images/ # 图片原始目录
   to: https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/ # 图片 CDN 域名
-  
+
 # 附加图标库 使用说明：https://docs.nexmoe.com/config/icon
 iconlib: //at.alicdn.com/t/c/font_3841883_wx2jzr3wdlh.css # //at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css
 
-search: 
+search:
   type: engine # 可选engine（用搜索引擎搜索）、swiftype、或local（本地搜索）
   url: https://cn.bing.com/search?q=site:nexmoe.com # 搜索引擎地址，在type为swiftype时无效 e.g:https://www.google.com/search?q={你的博客链接}
   id: <swiftype-id> # swiftype的id，见启用教程。在type为engine时无效
 
 cdn: # 这里可以修改站点使用的库的CDN
-  disqusjs: 
+  disqusjs:
     css: https://cdn.jsdelivr.net/npm/disqusjs@1.2.5/dist/disqusjs.min.css
     js: https://cdn.jsdelivr.net/npm/disqusjs@1.2.5/dist/disqus.min.js
   gitalk:
@@ -39,7 +39,7 @@ cdn: # 这里可以修改站点使用的库的CDN
     js: https://cdn.staticfile.org/twikoo/1.6.8/twikoo.all.min.js
 
 menu:
-  回到首页: 
+  回到首页:
     - /
     - icon-home
   文章归档:  # 使用说明：https://docs.nexmoe.com/article/archive
@@ -51,7 +51,7 @@ menu:
   留言板:
     - /system/message.html
     - icon-appstore-fill
-  友人帐: 
+  友人帐:
     - /system/friends.html # 使用说明：https://docs.nexmoe.com/article/py
 
 widgets:
@@ -94,12 +94,12 @@ social:
 customstyle: false
 
 # 向搜索引擎验证你对站点的所有权，用于向搜索引擎提交 sitemap 和管理站点被搜索引擎收录的情况。
-site_verification: 
+site_verification:
   google:
   baidu:
 
 # 统计系统，目前支持 Google analytics.js 统计、Google Tag Manager 统计、CNZZ 统计、腾讯统计、51.La统计、百度统计
-analytics: 
+analytics:
   google_site_id: #<ID>
   gtags_site_id: #<ID>
   cnzz_site_id: #<ID>
@@ -121,7 +121,7 @@ gitment:
   repo: nexmoe.github.io # 存放评论的 issue 所在的 repo
   clientID: 80b2453b6d5f37ad6225 # GitHub Client ID
   clientSecret: 43e99fa852795c9a7b3eb924b2558c64b84bbdeb # GitHub Client Secret
-valine: 
+valine:
   appId: 6GSGD2JUSrjs3EPP07HYDZkx-MdYXbMMI # leancloud application app id
   appKey: 36OIc4hWj0KShivONN241mnF # leancloud application app key
 disqus:
@@ -146,7 +146,7 @@ DiscussBot:
   dislike: 0 # 显示差评按钮
   icons: 0 # 图标主题
   diff: 0 # 每位用户name不同颜色
-#waline: 
+#waline:
 #  appId: 6GSGD2JUSrjs3EPP07HYDZkx-MdYXbMMI # leancloud application app id
 #  appKey: 36OIc4hWj0KShivONN241mnF # leancloud application app key
 #  masterKey: 6b394xnx35BgSeAtHfxXxR5P # leancloud application master key

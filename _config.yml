@@ -13,7 +13,7 @@ timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://blog.1think2program.cn/
+url: http://diary.1think2program.cn/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -106,7 +106,7 @@ aplayer:
 # 文章自动分类
 auto_category:
  enable: true
-# depth: 1 # 只想生成第一级目录分类，可以设置depth属性
+ depth: 1 # 只想生成第一级目录分类，可以设置depth属性
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
