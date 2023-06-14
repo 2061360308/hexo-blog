@@ -1,0 +1,34 @@
+<%- js([
+	'lib/mdui_043tiny/mdui.js','lib/jquery.min.js', 
+	'lib/justifiedGallery/jquery.justifiedGallery.min.js',
+	'lib/fancybox/fancybox.umd.js'
+]) %>
+
+<% if (theme.copyText) { %>
+	<script>var copyTip = "<%- theme.copyText %>"</script>
+<% } %> 
+
+<%- js_auto_version('js/app') %>
+
+<% if (theme.search.type == 'local') { %>
+	<%- js_auto_version('js/search') %>
+<%  } %>
+
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+<% if (theme.search.type=='swiftype') { %>
+	<script type="text/javascript">
+		var id='<%-theme.search.id%>';
+		(function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+		(w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+		e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+		})(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+		_st('install', id ,'2.0.0');
+	</script>
+<% } %>
